@@ -20,3 +20,20 @@ curl -v http://127.0.0.1:8000/health_check
 curl --request POST \
 --data 'name=test&email=test%40gmail.com' \
 127.0.0.1:8000/subscriptions --verbose
+
+
+###Deploy on Digital Ocean:
+Create Token at https://cloud.digitalocean.com/account/api/tokens (with write rights)
+Authenticate:
+
+    doctl auth init 
+
+Deploy App:
+
+    doctl apps create --spec spec.yaml 
+
+Check Apps:
+
+    doctl apps list 
+
+
