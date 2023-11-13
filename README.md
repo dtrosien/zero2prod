@@ -14,3 +14,9 @@ docker caching
 link github account with digital ocean
 
 
+### test curls
+curl -v http://127.0.0.1:8000/health_check
+
+curl --request POST \
+--data 'name=test&email=test%40gmail.com' \
+127.0.0.1:8000/subscriptions --verbose
