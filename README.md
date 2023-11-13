@@ -22,7 +22,7 @@ curl --request POST \
 127.0.0.1:8000/subscriptions --verbose
 
 
-###Deploy on Digital Ocean:
+### Deploy on Digital Ocean:
 Create Token at https://cloud.digitalocean.com/account/api/tokens (with write rights)
 Authenticate:
 
@@ -37,3 +37,6 @@ Check Apps:
     doctl apps list 
 
 
+migrate cloud db (might require disabling trusted sources temporarily https://docs.digitalocean.com/products/databases/postgresql/how-to/secure/):
+
+    DATABASE_URL=YOUR-DIGITAL-OCEAN-DB-CONNECTION-STRING sqlx migrate run
