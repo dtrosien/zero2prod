@@ -26,8 +26,11 @@ tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] } 
 tracing-bunyan-formatter = "0.3" # uses layer trait from tracing subscriber to build a processing pipeline for span data (see main)
 tracing-log = "0.1" # redirect logs to tracing
 tracing-actix-web = "0.7" # replacement for acti-web-logger
-
+unicode-segmentation = "1"
 secrecy = { version = "0.8", features = ["serde"] }
+claims = "0.7" # for better assertions in tests
+validator = "0.16"
+
 
 # Using table-like toml syntax to avoid a super-long line!
 [dependencies.sqlx]
@@ -45,3 +48,7 @@ features = [
 
 [dev-dependencies]
 reqwest = "0.11"
+fake = "2.8.0" # create fake test data e.g email adresses etc
+quickcheck = "1.0.3" # use types which implemts Arbitrary trait to generate data and run test functions multiple times
+quickcheck_macros = "1.0.0"
+rand = "0.8.5" # required to seed random to quickcheck
