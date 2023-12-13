@@ -60,3 +60,4 @@ quickcheck_macros = "1.0.0"
 rand = "0.8.5" # required to seed random to quickcheck
 wiremock = "0.5"
 serde_json = "1"
+linkify = "0.10.0" # to scan texts for links
