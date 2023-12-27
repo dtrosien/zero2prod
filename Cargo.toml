@@ -31,7 +31,8 @@ secrecy = { version = "0.8", features = ["serde"] }
 claims = "0.7" # for better assertions in tests
 validator = "0.16"
 rand = { version = "0.8.5", features = ["std_rng"] } # need the `std_rng` to get access to the PRNG (PseudoRandomNumberGenerator)
-
+thiserror = "1"
+anyhow = "1"
 
 # Using table-like toml syntax to avoid a super-long line!
 [dependencies.sqlx]

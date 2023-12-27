@@ -21,6 +21,13 @@ curl --request POST \
 --data 'name=test&email=test%40gmail.com' \
 127.0.0.1:8000/subscriptions --verbose
 
+### test commands
+
+for log output in tests use following env and for formatting pipe into bunyan
+
+    export TEST_LOG=true
+
+    cargo t subscribe_fails_if_there_is_a_fatal_database_error | bunyan
 
 ### Deploy on Digital Ocean:
 Create Token at https://cloud.digitalocean.com/account/api/tokens (with write rights)
