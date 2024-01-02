@@ -21,6 +21,14 @@ curl --request POST \
 --data 'name=test&email=test%40gmail.com' \
 127.0.0.1:8000/subscriptions --verbose
 
+### Prepare sqlx meta for offline mode
+
+To create a json file in .sqlx which will be used in offline mode (needed to build docker) to check the queries, run:
+
+    cargo sqlx prepare -- --tests
+The created file needs to be checked into git. (If you just get one file with the database in it, then something went wrong.)
+
+
 ### test commands
 
 for log output in tests use following env and for formatting pipe into bunyan
