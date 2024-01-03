@@ -35,6 +35,8 @@ thiserror = "1"
 anyhow = "1"
 base64 = "0.21"
 argon2 = { version = "0.5", features = ["std"] } # good algo for password hashing, supports PHC string format (for salting etc.)
+urlencoding = "2"
+htmlescape = "0.3.1"
 
 # Using table-like toml syntax to avoid a super-long line!
 [dependencies.sqlx]
