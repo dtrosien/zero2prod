@@ -70,3 +70,12 @@ The connection string to the Redis instance will be injected into the applicatio
 
 
 The `APP_APPLICATION__HMAC_SECRET` environment variable needs to be set on Digital Ocean as well for production
+
+
+### initial admin
+user: admin
+pw: everythinghastostartsomewhere
+
+
+### issue when running local:
+https://github.com/LukeMathWalker/zero-to-production/issues/234#issuecomment-1825106004

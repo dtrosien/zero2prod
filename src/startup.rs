@@ -108,10 +108,13 @@ pub async fn run(
     let server = HttpServer::new(move || {
         App::new()
             .wrap(message_framework.clone())
-            .wrap(SessionMiddleware::new(
-                redis_store.clone(),
-                secret_key.clone(),
-            ))
+            .wrap(
+                SessionMiddleware::builder(redis_store.clone(), secret_key.clone())
+                    // when running on localhost this needs to be set to false see
+                    // https://github.com/LukeMathWalker/zero-to-production/issues/234#issuecomment-1825106004
+                    .cookie_secure(true)
+                    .build(),
+            )
             .wrap(TracingLogger::default())
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
