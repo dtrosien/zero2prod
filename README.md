@@ -1,6 +1,7 @@
 # zero2prod
 
 email newsletter: a training project
+based on https://github.com/LukeMathWalker/zero-to-production
 
 ### structure
 
