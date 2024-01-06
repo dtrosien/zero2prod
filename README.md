@@ -13,8 +13,8 @@ email newsletter: a training project
 
 ### todo
 
-docker caching
-link github account with digital ocean
+* docker caching
+* expiry mechanism for idempotency keys (as background job like issue workers)
 
 ### test curls
 
@@ -64,19 +64,21 @@ temporarily https://docs.digitalocean.com/products/databases/postgresql/how-to/s
 Redis must be deployed manually (not supported via spec.yaml):
 https://cloud.digitalocean.com/databases/new?engine=redis&i=83b9b8
 
-
 The connection string to the Redis instance will be injected into the application using an environment value
-- set APP_REDIS_URI from the Settings panel in the application console.
 
+- set APP_REDIS_URI from the Settings panel in the application console.
 
 The `APP_APPLICATION__HMAC_SECRET` environment variable needs to be set on Digital Ocean as well for production
 
-
 ### initial admin
-user: admin
-pw: everythinghastostartsomewhere
 
+* user: admin
+* pw: everythinghastostartsomewhere
 
 ### issue when running local:
+
 https://github.com/LukeMathWalker/zero-to-production/issues/234#issuecomment-1825106004
 (fixed with additional cookie setting)
+
+
+
