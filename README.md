@@ -79,3 +79,4 @@ pw: everythinghastostartsomewhere
 
 ### issue when running local:
 https://github.com/LukeMathWalker/zero-to-production/issues/234#issuecomment-1825106004
+(fixed with additional cookie setting)
