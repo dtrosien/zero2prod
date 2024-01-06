@@ -1,3 +1,4 @@
+use crate::authentication::reject_anonymous_users;
 use crate::configuration::DatabaseSettings;
 use crate::configuration::Settings;
 use crate::email_client::EmailClient;
@@ -9,10 +10,10 @@ use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
 use actix_web::cookie::Key;
 use actix_web::dev::Server;
-use actix_web::web::Data;
 use actix_web::{web, App, HttpServer};
 use actix_web_flash_messages::storage::CookieMessageStore;
 use actix_web_flash_messages::FlashMessagesFramework;
+use actix_web_lab::middleware::from_fn;
 use secrecy::{ExposeSecret, Secret};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
@@ -54,6 +55,7 @@ impl Application {
             configuration.application.base_url,
             configuration.application.hmac_secret,
             configuration.redis_uri,
+            configuration.application.secure_cookies,
         )
         .await?;
 
@@ -91,6 +93,7 @@ pub async fn run(
     base_url: String,
     hmac_secret: Secret<String>,
     redis_uri: Secret<String>,
+    secure_cookies: bool,
 ) -> Result<Server, anyhow::Error> {
     // wrap connection in a smart pointer (uses Arc internally)
     let db_pool = web::Data::new(db_pool);
@@ -113,26 +116,29 @@ pub async fn run(
                 SessionMiddleware::builder(redis_store.clone(), secret_key.clone())
                     // when running on localhost this needs to be set to false see
                     // https://github.com/LukeMathWalker/zero-to-production/issues/234#issuecomment-1825106004
-                    .cookie_secure(true)
+                    .cookie_secure(secure_cookies)
                     .build(),
             )
             .wrap(TracingLogger::default())
+            .route("/", web::get().to(home))
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
             .route("/subscriptions/confirm", web::get().to(confirm))
             .route("/newsletters", web::post().to(publish_newsletter))
-            .route("/", web::get().to(home))
             .route("/login", web::get().to(login_form))
             .route("/login", web::post().to(login))
-            .route("/admin/dashboard", web::get().to(admin_dashboard))
-            .route("/admin/password", web::get().to(change_password_form))
-            .route("/admin/password", web::post().to(change_password))
-            .route("/admin/logout", web::post().to(log_out))
+            .service(
+                web::scope("/admin")
+                    .wrap(from_fn(reject_anonymous_users))
+                    .route("/dashboard", web::get().to(admin_dashboard))
+                    .route("/password", web::get().to(change_password_form))
+                    .route("/password", web::post().to(change_password))
+                    .route("/logout", web::post().to(log_out)),
+            )
             // Register the connection as part of the application state
             .app_data(db_pool.clone())
             .app_data(email_client.clone())
             .app_data(base_url.clone())
-            .app_data(Data::new(HmacSecret(hmac_secret.clone())))
     })
     .listen(listener)?
     .run();

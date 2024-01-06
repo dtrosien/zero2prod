@@ -20,9 +20,9 @@ pub enum AuthError {
 
 #[tracing::instrument(name = "Validate credentials", skip(credentials, pool))]
 pub async fn validate_credentials(
-    credentials: Credentials,
+    credentials: crate::authentication::Credentials,
     pool: &PgPool,
-) -> Result<uuid::Uuid, AuthError> {
+) -> Result<uuid::Uuid, crate::authentication::AuthError> {
     let mut user_id = None;
     let mut expected_password_hash = Secret::new(
         "$argon2id$v=19$m=15000,t=2,p=1$\
@@ -47,7 +47,9 @@ pub async fn validate_credentials(
     // This is only set to `Some` if we found credentials in the store
     // So, even if the default password ends up matching (somehow) with the provided password,
     // we never authenticate a non-existing user.
-    user_id.ok_or_else(|| AuthError::InvalidCredentials(anyhow::anyhow!("Unknown username.")))
+    user_id.ok_or_else(|| {
+        crate::authentication::AuthError::InvalidCredentials(anyhow::anyhow!("Unknown username."))
+    })
 }
 
 #[tracing::instrument(name = "Get stored credentials", skip(username, pool))]
@@ -77,7 +79,7 @@ async fn get_stored_credentials(
 fn verify_password_hash(
     expected_password_hash: Secret<String>,
     password_candidate: Secret<String>,
-) -> Result<(), AuthError> {
+) -> Result<(), crate::authentication::AuthError> {
     // Using the PHC string format, an Argon2id password hash looks like this:
     // # ${algorithm}${algorithm version}${,-separated algorithm parameters}${hash}${salt}
     let expected_password_hash = PasswordHash::new(expected_password_hash.expose_secret())
@@ -88,7 +90,7 @@ fn verify_password_hash(
             &expected_password_hash,
         )
         .context("Invalid password.")
-        .map_err(AuthError::InvalidCredentials)
+        .map_err(crate::authentication::AuthError::InvalidCredentials)
 }
 
 #[tracing::instrument(name = "Change password", skip(password, pool))]
