@@ -14,7 +14,7 @@ name = "zero2prod"
 path = "src/main.rs"
 
 [dependencies]
-actix-web = "4"
+actix-web = "4.4.1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 serde = { version = "1", features = ["derive"] }
 serde-aux = "4"
@@ -38,7 +38,7 @@ argon2 = { version = "0.5", features = ["std"] } # good algo for password hashin
 urlencoding = "2"
 htmlescape = "0.3.1"
 actix-web-flash-messages = { version = "0.4", features = ["cookies"] }
-actix-session = { version = "0.8", features = ["redis-rs-tls-session"] }
+actix-session = { version = "0.9", features = ["redis-rs-tls-session"] }
 serde_json = "1"
 actix-web-lab = "0.20"
 serde_urlencoded = "0.7.1"
@@ -57,7 +57,7 @@ features = [
 ]
 
 [dependencies.reqwest]
-version = "0.11"
+version = "0.11.23"
 default-features = false
 # We need the `json` feature flag to serialize/deserialize JSON payloads
 features = ["json", "rustls-tls", "cookies"]
@@ -65,7 +65,7 @@ features = ["json", "rustls-tls", "cookies"]
 
 [dev-dependencies]
 
-fake = "2.8.0" # create fake test data e.g email adresses etc
+fake = "2.9.2" # create fake test data e.g email adresses etc
 quickcheck = "1.0.3" # use types which implemts Arbitrary trait to generate data and run test functions multiple times
 quickcheck_macros = "1.0.0"
 rand = "0.8.5" # required to seed random to quickcheck
